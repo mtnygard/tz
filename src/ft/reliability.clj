@@ -1,7 +1,6 @@
 (ns ft.reliability
+  (:use [incanter.core])
   (:import [java.lang Math]))
-
-(defn exp [x] (Math/exp x))
 
 (defn constant-hazard-r [r]
   "Return a function that evaluates to the reliability of a constant hazard part"

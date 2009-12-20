@@ -1,5 +1,5 @@
 (ns ft.reliability
-  (:use [incanter.core])
+  (:use (incanter core stats))
   (:import [java.lang Math]))
 
 (defn constant-hazard-r [r]
@@ -24,3 +24,8 @@
   ([x y & xs]
      (let [xs (list* x y xs)]
        (fn [t] (- 1.0 (reduce #(* %1 (- 1.0 (%2 t))) 1.0 xs))))))
+
+(defn sample-availability [s t n]
+  "Return a sequence of observed availability trials for time t. States will be true if still availble, false if the system has failed prior to this time. Repairs are not considered."
+  (let [survival-odds (s t)]
+    (map #(> survival-odds %) (sample-uniform n))))

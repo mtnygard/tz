@@ -42,3 +42,8 @@
 (deftest realistic-parallel
   (let [system (parallel-r c1 c2 c3)]
     (is (< 0.99999 (system 2.0) 0.999999 (system 1.0) 1.0))))
+
+(deftest identical-r-of-n
+  (let [flaky-component (constant-hazard-r 0.5)
+        system (r-of-n-identical 1 5 flaky-component)]
+    (is (< 0.71 (system 3) 0.72 0.89 (system 2) 0.90 0.99 (system 1) 1.0))))

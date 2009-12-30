@@ -2,8 +2,9 @@
   (:use (incanter core stats))
   (:import [java.lang Math]))
 
-(defn constant-hazard-r [r]
+(defn constant-hazard-r
   "Return a function that evaluates to the reliability of a constant hazard part"
+  [r]
   (fn [t] (exp (-  (* r t)))))
 
 (defn series-r
@@ -20,16 +21,18 @@
      (let [xs (list* x xs)]
        (fn [t] (- 1.0 (reduce #(* %1 (- 1.0 (%2 t))) 1.0 xs))))))
 
-(defn units-surviving [r n p]
+(defn units-surviving
   "Probability of exactly r out of n units surviving. Probability of any unit surviving is p."
+  [r n p]
   (* (choose n r)
      (pow p r)
      (pow (- 1 p) (- n r))))
 
-(defn r-of-n-identical [r n x]
+(defn r-of-n-identical
   "Define a system where at least r of the n components must function. All
    components have identical reliability, given by x. When applicable, this is the
    preferred function, as it will be much faster than the general r-of-n."
+  [r n x]
   (fn [t]
     (sum (map #(units-surviving % n (x t)) (range r (inc n))))))
 
@@ -39,7 +42,8 @@
 ;  
 ;)
 
-(defn sample-availability [s t n]
+(defn sample-availability
   "Return a sequence of observed availability trials for time t. States will be true if still availble, false if the system has failed prior to this time. Repairs are not considered."
+  [s t n]
   (let [survival-odds (s t)]
     (map #(> survival-odds %) (sample-uniform n))))

@@ -1,11 +1,12 @@
 (ns ft.reliability
   (:use (incanter core stats))
+  (:use (clojure.contrib.monads))
   (:import [java.lang Math]))
 
 (defn constant-hazard-r
   "Return a function that evaluates to the reliability of a constant hazard part"
   [r]
-  (fn [t] (exp (-  (* r t)))))
+  (fn [t] (- 1 (cdf-exp t :rate r))))
 
 (defn series-r
   ([x]

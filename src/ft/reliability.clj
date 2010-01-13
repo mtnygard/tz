@@ -8,6 +8,11 @@
   [r]
   (fn [t] (- 1 (cdf-exp t :rate r))))
 
+(defn weibull-hazard-r
+  "Return a function that evaluations to the reliability of a Weibull hazard part"
+  [shape scale]
+  (fn [t] (- 1 (cdf-weibull t :shape shape :scale scale))))
+
 (defn series-r
   ([x]
      (fn [t] (x t)))
